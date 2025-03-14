@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ThingSpeak Sync (1 Minute)</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+        #log { 
+            height: 400px; 
+            overflow-y: auto; 
+            border: 1px solid #ccc; 
+            padding: 10px;
+            margin-top: 10px;
+            background: #f9f9f9;
+        }
+        .success { 
+            color: #28a745; 
+            margin: 5px 0;
+        }
+        .error { 
+            color: #dc3545; 
+            margin: 5px 0;
+        }
+        .status-container {
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #fff;
+        }
+        #status {
+            font-weight: bold;
+            color: #28a745;
+        }
+        #nextSync {
+            color: #666;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>ThingSpeak to Database Sync (1 Minute Interval)</h2>
+    <div class="status-container">
+        <div>Status: <span id="status">Running</span></div>
+        <div>Last Sync: <span id="lastSync">Never</span></div>
+        <div>Next Sync: <span id="nextSync">Calculating...</span></div>
+    </div>
+    <div id="log"></div>
+
+    <script>
+        let isRunning = true;
+        let nextSyncTime = Date.now() + 60000;
+        const log = document.getElementById('log');
+        const status = document.getElementById('status');
+        const lastSync = document.getElementById('lastSync');
+        const nextSyncSpan = document.getElementById('nextSync');
+
+        function updateNextSync() {
+            const now = Date.now();
+            const timeLeft = Math.max(0, nextSyncTime - now);
+            const seconds = Math.ceil(timeLeft / 1000);
+            nextSyncSpan.textContent = `in ${seconds} seconds`;
+
+            if (isRunning) {
+                requestAnimationFrame(updateNextSync);
+            }
+        }
+
+        async function syncData() {
+            try {
+                const response = await fetch('thingspeak_to_db.php');
+                const result = await response.json();
+                
+                const timestamp = new Date().toLocaleString();
+                const logEntry = document.createElement('div');
+                logEntry.className = result.success ? 'success' : 'error';
+                logEntry.textContent = `${timestamp}: ${result.success ? 'Success' : 'Error'} - ${result.message || result.error}`;
+                
+                log.insertBefore(logEntry, log.firstChild);
+                lastSync.textContent = timestamp;
+                
+                // Keep only last 100 log entries
+                if (log.children.length > 100) {
+                    log.removeChild(log.lastChild);
+                }
+            } catch (error) {
+                const logEntry = document.createElement('div');
+                logEntry.className = 'error';
+                logEntry.textContent = `${new Date().toLocaleString()}: Sync failed - ${error.message}`;
+                log.insertBefore(logEntry, log.firstChild);
+            }
+
+            if (isRunning) {
+                nextSyncTime = Date.now() + 60000; // Set next sync time to 1 minute from now
+                setTimeout(syncData, 60000); // Schedule next sync in 1 minute
+            }
+        }
+
+        // Start syncing and update display
+        syncData();
+        updateNextSync();
+
+        // Update status when window is closing
+        window.onbeforeunload = function() {
+            isRunning = false;
+            status.textContent = 'Stopped';
+            status.style.color = '#dc3545';
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --primary-color: white;
+    --secondary-color: #A0DEFF;
+    --tertiary-color: #3F9EFF;
+    --accent-color: black;
+    --table-color: rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: "Montserrat", sans-serif !important;
+}
+
+nav {
+    background: var(--secondary-color);
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 0px;
+    padding-left: 30px;
+    padding-right: 30px;
+    height: 64px;
+}
+
+nav .mainMenu {
+    display: flex;
+    align-items: center;
+    list-style: none;
+}
+
+nav .mainMenu li a {
+    display: inline-block;  
+    padding: 20px;
+    margin-top: 15px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.2s ease;
+}
+
+nav .mainMenu li a:hover {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+nav .openMenu {
+    font-size: 2rem;
+    margin: 20px;
+    display: none;
+    cursor: pointer;
+}
+  
+nav .mainMenu .closeMenu,
+.icons i {
+    font-size: 2rem;
+    display: none;
+    cursor: pointer;
+}
+
+.openMenu:hover {
+    color: var(--tertiary-color);
+}
+
+.closeMenu:hover {
+    color: var(--primary-color);
+}
+
+nav .logo {
+    margin: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+@media (max-width: 800px) {
+    nav .mainMenu {
+        height: 100vh;
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        left: 0px;
+        z-index: 10;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: var(--tertiary-color);
+        transition: top 1s ease 0s;
+        display: none;
+    }
+    nav .mainMenu .closeMenu {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+    nav .openMenu {
+        display: block;
+    }
+    nav .mainMenu li a {
+        font-weight: bold;
+    }
+    nav .mainMenu li a:hover {
+        background: none;
+        color: var(--primary-color);
+    }
+    .icons i {
+        display: inline-block;
+        padding: 12px;
+    }
+}
+
+.historical-data {
+    margin: 20px auto;  /* Changed to auto for horizontal centering */
+    padding: 20px;
+    color: var(--accent-color);
+    border-radius: 10px;
+    text-align: center;
+    max-width: 1500px;  /* Match the max-width of comparison container */
+}
+
+header {
+    text-align: center;
+    padding: 30px 30px;
+}
+
+h2 {
+    color: var(--accent-color);
+    font-weight: bold !important;
+    margin-top: 30px !important;
+}
+
+h3 {
+    color: var(--accent-color);
+    font-weight: bold !important;
+    margin-top: 20px !important;
+    margin-bottom: 15px !important;
+}
+
+.table-responsive {
+    margin: 10px 0;  /* Add vertical spacing */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;  /* Center tables with auto margins */
+}
+
+table, th, td {
+    border: 1px solid var(--table-color) !important;
+}
+
+th, td {
+    padding: 8px 15px;  /* Updated consistent padding */
+    text-align: left;
+}
+
+th {
+    color: var(--primary-color);
+    background-color: var(--tertiary-color);
+}
+
+option:hover {
+    background-color: var(--tertiary-color) !important;
+}
+
+select {
+    background-color: var(--tertiary-color);
+    border: none;
+    color: var(--primary-color);
+    padding: 3px 5px;
+}
+
+label {
+    margin-bottom: 21px;
+}
+
+.comparison-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 20px;
+    max-width: 1500px;
+    margin: 0 auto;
+    margin-bottom: 60px;
+}
+
+.table-section {
+    flex: 1;
+    min-width: 45%;
+    padding: 0;  /* Remove any existing padding */
+}
+
+.table-section h3 {
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .comparison-container {
+        flex-direction: column;
+    }
+    
+    .table-section {
+        min-width: 100%;
+    }
+}
+
+footer {
+    background-color: #A0DEFF;
+    height: 43px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    color: #1D1D1D;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 10px;
+}
+
+@media only screen and (min-width: 780px) and (max-width: 1199px) {
+    .historical-data p{
+        font-size: 14px;
+    }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 779px) {
+    .historical-data p {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 479px) {
+    .historical-data p {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .historical-data p {
+        font-size: 12px;
+    }
+}

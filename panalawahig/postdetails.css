@@ -1,0 +1,309 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --primary-color: white;
+    --secondary-color: #A0DEFF;
+    --tertiary-color: #3F9EFF;
+    --accent-color: black;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Montserrat" !important;
+    line-height: 1.6;
+    background-color: #F4FBFF !important;
+}
+
+nav {
+    background: var(--secondary-color);
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 0px;
+    padding-left: 30px;
+    padding-right: 30px;
+    height: 64px;
+}
+
+nav .mainMenu {
+    display: flex;
+    align-items: center;
+    list-style: none;
+}
+
+nav .mainMenu li a {
+    display: inline-block;  
+    padding: 20px;
+    margin-top: 15px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.2s ease;
+}
+
+nav .mainMenu li a:hover {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+nav .openMenu {
+    font-size: 2rem;
+    margin: 20px;
+    display: none;
+    cursor: pointer;
+}
+  
+nav .mainMenu .closeMenu,
+  .icons i {
+    font-size: 2rem;
+    display: none;
+    cursor: pointer;
+}
+
+.openMenu:hover {
+    color: var(--tertiary-color);
+}
+
+.closeMenu:hover {
+    color: var(--primary-color);
+}
+
+nav .logo {
+    margin: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+  @media (max-width: 800px) {
+    nav .mainMenu {
+      height: 100vh;
+      position: fixed;
+      top: 0px;
+      right: 0px;
+      left: 0px;
+      z-index: 10;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: var(--tertiary-color);
+      transition: top 1s ease 0s;
+      display: none;
+    }
+    nav .mainMenu .closeMenu {
+      display: block;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+    nav .openMenu {
+      display: block;
+    }
+    nav .mainMenu li a {
+        font-weight: bold;
+    }
+    nav .mainMenu li a:hover {
+      background: none;
+      color: var(--primary-color);
+    }
+    .icons i {
+      display: inline-block;
+      padding: 12px;
+    }
+  }
+
+/* postdetails na dito */
+.post-detail {
+    background-color: var(--primary-color); /* Use the defined primary color */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    padding: 20px; /* Padding inside the container */
+    max-width: 800px; /* Maximum width of the post detail */
+    margin: 20px auto; /* Center the post detail with auto margins */
+}
+
+.post-header {
+    text-align: center; /* Center the header text */
+    margin-bottom: 20px; /* Space below the header */
+}
+
+.post-title {
+    font-size: 2rem; /* Larger font size for the title */
+    margin: 0; /* Remove default margin */
+}
+
+.post-date {
+    color: #666; /* Gray color for the date */
+}
+
+.post-image {
+    background-image: url('path/to/your/image.jpg'); /* Replace with your image path */
+    background-size: cover; /* Cover the entire div */
+    background-position: center; /* Center the image */
+    height: 200px; /* Set a fixed height for the image */
+    border-radius: 8px; /* Rounded corners for the image */
+    margin: 0 auto 20px auto; /* Center the image and add space below */
+    width: 100%; /* Make the image take full width of the container */
+}
+
+.post-content {
+    text-align: left; /* Align text to the left */
+}
+
+.post-section {
+    margin-bottom: 20px; /* Space below each section */
+}
+
+.post-answer {
+    line-height: 1.6; /* Improve readability with line height */
+}
+
+
+footer {
+    background-color: #A0DEFF;
+    height: 43px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    color: #1D1D1D;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 10px;
+}
+
+/* Large screens (desktops) */
+@media only screen and (min-width: 1200px) {
+    .ab, .tes {
+        padding: 0 50px;
+    }
+    h3 {
+        font-size: 30px !important;
+    }
+    h4 {
+        font-size: 16px !important;
+    }
+    .tes-img img {
+        height: 200px;
+        width: 200px;
+    }
+    .tes-desc h4 {
+        width: 50%;
+    }
+}
+
+/* Medium screens (tablets) */
+@media only screen and (min-width: 780px) and (max-width: 1199px) {
+    .ab, .tes {
+        padding: 0 30px;
+    }
+    h3 {
+        font-size: 26px !important;
+        text-align: center !important;
+    }
+    h4, .tes .testi h4 {
+        font-size: 14px !important;
+    }
+    .tes-img img {
+        height: 150px;
+        width: 150px;
+    }
+    .tes-desc h4 {
+        width: 60%;
+    }
+    .ab {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .ab img {
+        margin-bottom: 20px;
+    }
+}
+
+/* Small screens (mobiles) */
+@media only screen and (min-width: 480px) and (max-width: 779px) {
+    .ab, .tes {
+        padding: 0 20px;
+    }
+    h3 {
+        font-size: 18px !important;
+    }
+    h4, .tes .testi h4 {
+        font-size: 12px !important;
+    }
+    .tes-img img {
+        height: 100px;
+        width: 100px;
+    }
+    .tes-desc h4 {
+        width: 70%;
+    }
+    .ab {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .ab img {
+        margin-bottom: 20px;
+        width: 450px;
+    }
+}
+
+/* Extra small screens (mobiles) */
+@media only screen and (max-width: 479px) {
+    .ab, .tes {
+        padding: 0 10px;
+    }
+    h3 {
+        font-size: 10px !important;
+    }
+    h4, .tes .testi h4 {
+        font-size: 10px !important;
+    }
+    .tes-img img {
+        height: 80px;
+        width: 80px;
+    }
+    .tes-desc h4 {
+        width: 80%;
+    }
+    .ab {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .ab img {
+        margin-bottom: 20px;
+        width: 300px;
+    }
+}
+
+/* Extra extra small screens (mobiles) */
+@media only screen and (max-width: 320px) {
+    .ab, .tes {
+        padding: 0 5px;
+    }
+    h3 {
+        font-size: 6px !important;
+    }
+    h4, .tes .testi h4 {
+        font-size: 8px !important;
+    }
+    .tes-img img {
+        height: 60px;
+        width: 60px;
+    }
+    .tes-desc h4 {
+        width: 90%;
+    }
+}
