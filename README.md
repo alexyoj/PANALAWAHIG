@@ -1,3 +1,5 @@
+<!-- START MIRAHEZE CONTENT -->
+
 # PANALAWAHIG
 IoT-Based Water Quality Testing System for far-flung Areas of Davao City
 
@@ -29,3 +31,5 @@ Other Components:
 - Powerbank (portable power supply)
   
 These components work together to provide comprehensive water quality analysis in areas where traditional laboratory testing is impractical due to geographic isolation.
+
+<!-- END MIRAHEZE CONTENT -->
