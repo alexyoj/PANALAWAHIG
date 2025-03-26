@@ -26,8 +26,7 @@ jobs:
 
       - name: Update README.md
         run: |
-          # Replace content between markers
-          sed -i "/<!-- START MIRAHEZE CONTENT -->/,/<!-- END MIRAHEZE CONTENT -->/c<!-- START MIRAHEZE CONTENT -->\n${{ steps.fetch.outputs.content }}\n<!-- END MIRAHEZE CONTENT -->" README.md
+           sed -i "/<!-- START MIRAHEZE CONTENT -->/,/<!-- END MIRAHEZE CONTENT -->/c<!-- START MIRAHEZE CONTENT -->\n${{ steps.fetch.outputs.content }}\n<!-- END MIRAHEZE CONTENT -->" README.md
 
       - name: Commit and Push Changes
         if: git status --porcelain
