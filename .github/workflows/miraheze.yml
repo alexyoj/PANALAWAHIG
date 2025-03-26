@@ -1,1 +1,40 @@
 
+name: Sync Miraheze to README
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight UTC
+  workflow_dispatch:      # Allows manual triggering
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Dependencies (jq)
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Fetch Miraheze Content
+        id: fetch
+        run: |
+          # Replace PAGE_TITLE with your Miraheze page (e.g., "Project:README")
+          CONTENT=$(curl -s "https://miraheze.org/w/api.php?action=query&prop=revisions&titles=PAGE_TITLE&rvprop=content&format=json" | jq -r '.query.pages[].revisions[0]["*"]')
+          echo "content=$CONTENT" >> $GITHUB_OUTPUT
+
+      - name: Update README.md
+        run: |
+          # Replace content between markers
+          sed -i "/<!-- START MIRAHEZE CONTENT -->/,/<!-- END MIRAHEZE CONTENT -->/c<!-- START MIRAHEZE CONTENT -->\n${{ steps.fetch.outputs.content }}\n<!-- END MIRAHEZE CONTENT -->" README.md
+
+      - name: Commit and Push Changes
+        if: git status --porcelain
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add README.md
+          git commit -m "Auto-update README from Miraheze"
+          git push
