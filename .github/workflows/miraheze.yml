@@ -21,8 +21,7 @@ jobs:
       - name: Fetch Miraheze Content
         id: fetch
         run: |
-          # Replace with your Miraheze wiki URL (e.g., panalawahig.miraheze.org)
-            CONTENT=$(curl -s "https://miraheze.org/w/api.php?action=query&prop=revisions&titles=Main_Page&rvprop=content&format=json" | jq -r '.query.pages[].revisions[0]["*"]')
+            CONTENT=$(curl -s "https://panalawahig.miraheze.org/w/api.php?action=query&prop=revisions&titles=Main_Page&rvprop=content&format=json" | jq -r '.query.pages[].revisions[0]["*"]')
             echo "content=$CONTENT" >> $GITHUB_OUTPUT
 
       - name: Update README.md
