@@ -16,6 +16,7 @@ def fetch_miraheze_content(wiki_api_url, page_title):
     }
     
     try:
+        print(f"Fetching content from {wiki_api_url} for page {page_title}")
         response = requests.get(wiki_api_url, params=params)
         response.raise_for_status()
         data = response.json()
@@ -74,21 +75,18 @@ def update_readme_with_wiki_content(wiki_content):
 
 def main():
     # Get wiki API URL and page title from environment variables
-    wiki_url = os.environ.get('MIRAHEZE_WIKI_URL')
+    wiki_url = os.environ.get('MIRAHEZE_WIKI_URL', 'https://panalawahigdocs.miraheze.org')
     page_title = os.environ.get('MIRAHEZE_PAGE_TITLE', 'Main_Page')
     
-    if not wiki_url:
-        print("Error: MIRAHEZE_WIKI_URL environment variable not set.")
-        return False
-    
-    # Ensure the URL points to the API endpoint
-    if not wiki_url.endswith('api.php'):
-        if not wiki_url.endswith('/'):
-            wiki_url += '/'
-        wiki_url += 'api.php'
+    # Use the direct API URL if provided, otherwise construct it
+    api_url = wiki_url
+    if not api_url.endswith('api.php'):
+        if not api_url.endswith('/'):
+            api_url += '/'
+        api_url += 'w/api.php'
     
     # Fetch wiki content
-    wiki_content = fetch_miraheze_content(wiki_url, page_title)
+    wiki_content = fetch_miraheze_content(api_url, page_title)
     if not wiki_content:
         return False
     
