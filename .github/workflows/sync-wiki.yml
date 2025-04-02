@@ -1,0 +1,44 @@
+name: Sync README to Miraheze Wiki
+
+on:
+  push:
+    branches:
+      - main  # or your default branch
+    paths:
+      - 'README.md'
+
+jobs:
+  sync-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get install -y curl jq
+
+      - name: Get Login Token
+        run: |
+          LOGIN_TOKEN=$(curl -d "action=login&lgname=Alexisyoj23@Mikafleur123&lgpassword=ep47hjsfj3gmejghmqv7poc1rh76fb39&format=json" https://panalawahigdocs.miraheze.org/w/api.php | jq -r '.login.token')
+          echo "LOGIN_TOKEN=$LOGIN_TOKEN" >> $GITHUB_ENV
+
+      - name: Login
+        run: |
+          curl -d "action=login&lgname=Alexisyoj23@Mikafleur123&lgpassword=ep47hjsfj3gmejghmqv7poc1rh76fb39&lgtoken=$LOGIN_TOKEN&format=json" https://panalawahigdocs.miraheze.org/w/api.php
+
+      - name: Get Edit Token
+        run: |
+          EDIT_TOKEN=$(curl -s "https://panalawahigdocs.miraheze.org/w/api.php?action=query&meta=tokens&format=json" | jq -r '.query.tokens.csrftoken')
+          echo "EDIT_TOKEN=$EDIT_TOKEN" >> $GITHUB_ENV
+
+      - name: Update Wiki Page
+        run: |
+          CONTENT=$(base64 -w0 README.md)
+          curl -X POST \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            --data-urlencode "title=Main Page" \
+            --data-urlencode "text=$(cat README.md)" \
+            --data-urlencode "token=$EDIT_TOKEN" \
+            --data-urlencode "format=json" \
+            "https://panalawahigdocs.miraheze.org/w/api.php?action=edit"
