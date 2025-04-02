@@ -1,100 +1,39 @@
-#!/usr/bin/env python3
-import os
-import re
-import requests
-import json
+name: Sync Miraheze Wiki to README
 
-def fetch_miraheze_content(wiki_api_url, page_title):
-    """Fetch content from a Miraheze wiki page using the API."""
-    params = {
-        'action': 'query',
-        'prop': 'revisions',
-        'titles': page_title,
-        'rvprop': 'content',
-        'rvslots': 'main',
-        'format': 'json'
-    }
-    
-    try:
-        response = requests.get(wiki_api_url, params=params)
-        response.raise_for_status()
-        data = response.json()
-        
-        # Extract page content from response
-        pages = data['query']['pages']
-        page_id = list(pages.keys())[0]
-        
-        if int(page_id) < 0:  # Negative page IDs indicate missing pages
-            print(f"Error: Page '{page_title}' not found on the wiki.")
-            return None
-            
-        content = pages[page_id]['revisions'][0]['slots']['main']['*']
-        return content
-    except Exception as e:
-        print(f"Failed to fetch wiki content: {e}")
-        return None
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs at midnight every day
+  workflow_dispatch:      # Allows manual triggering
 
-def update_readme_with_wiki_content(wiki_content):
-    """Update the README.md file with content from the wiki between specified markers."""
-    try:
-        # Check if README.md exists
-        if not os.path.exists('README.md'):
-            print("README.md does not exist. Creating new file.")
-            with open('README.md', 'w', encoding='utf-8') as f:
-                f.write(f"<!-- START MIRAHEZE CONTENT -->\n{wiki_content}\n<!-- END MIRAHEZE CONTENT -->")
-            return True
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
         
-        # Read existing README.md
-        with open('README.md', 'r', encoding='utf-8') as f:
-            readme_content = f.read()
-        
-        # Look for the content markers
-        start_marker = "<!-- START MIRAHEZE CONTENT -->"
-        end_marker = "<!-- END MIRAHEZE CONTENT -->"
-        
-        if start_marker in readme_content and end_marker in readme_content:
-            # Replace content between markers
-            pattern = re.compile(f"{start_marker}(.*?){end_marker}", re.DOTALL)
-            updated_content = pattern.sub(f"{start_marker}\n{wiki_content}\n{end_marker}", readme_content)
-            
-            # Write updated content back to README.md
-            with open('README.md', 'w', encoding='utf-8') as f:
-                f.write(updated_content)
-            
-            print("README.md updated successfully.")
-            return True
-        else:
-            print("Markers not found in README.md. Adding them with wiki content.")
-            with open('README.md', 'w', encoding='utf-8') as f:
-                f.write(f"{start_marker}\n{wiki_content}\n{end_marker}")
-            return True
-    except Exception as e:
-        print(f"Failed to update README.md: {e}")
-        return False
-
-def main():
-    # Get wiki API URL and page title from environment variables
-    wiki_url = os.environ.get('MIRAHEZE_WIKI_URL')
-    page_title = os.environ.get('MIRAHEZE_PAGE_TITLE', 'Main_Page')
-    
-    if not wiki_url:
-        print("Error: MIRAHEZE_WIKI_URL environment variable not set.")
-        return False
-    
-    # Ensure the URL points to the API endpoint
-    if not wiki_url.endswith('api.php'):
-        if not wiki_url.endswith('/'):
-            wiki_url += '/'
-        wiki_url += 'api.php'
-    
-    # Fetch wiki content
-    wiki_content = fetch_miraheze_content(wiki_url, page_title)
-    if not wiki_content:
-        return False
-    
-    # Update README.md with wiki content
-    return update_readme_with_wiki_content(wiki_content)
-
-if __name__ == "__main__":
-    success = main()
-    exit(0 if success else 1)
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4
+          
+      - name: Sync Wiki to README
+        run: python .github/scripts/sync_wiki_to_readme.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MIRAHEZE_WIKI_URL: "https://panalawahigdocs.miraheze.org"
+          MIRAHEZE_PAGE_TITLE: "Main_Page" # Change this if your wiki page has a different title
+          
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add README.md
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update README from Miraheze wiki [skip ci]"
+          git push
