@@ -3,7 +3,7 @@ name: Sync README to Miraheze Wiki
 on:
   push:
     branches:
-      - main  # or your default branch
+      - main
     paths:
       - 'README.md'
 
@@ -15,26 +15,40 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Dependencies
-        run: |
-          sudo apt-get install -y curl jq
+        run: sudo apt-get install -y curl jq
 
-      - name: Get Login Token
+      - name: Login to Miraheze
+        env:
+          BOT_PASSWORD: ${{ secrets.MIRAHEZE_BOT_PASSWORD }}
         run: |
-          LOGIN_TOKEN=$(curl -d "action=login&lgname=Alexisyoj23@Mikafleur123&lgpassword=ep47hjsfj3gmejghmqv7poc1rh76fb39&format=json" https://panalawahigdocs.miraheze.org/w/api.php | jq -r '.login.token')
-          echo "LOGIN_TOKEN=$LOGIN_TOKEN" >> $GITHUB_ENV
+          # Step 1: Get login token
+          LOGIN_RESPONSE=$(curl -sS \
+            -d "action=login" \
+            -d "lgname=Alexisyoj23@Mikafleur123" \
+            -d "lgpassword=$BOT_PASSWORD" \
+            -d "format=json" \
+            https://panalawahigdocs.miraheze.org/w/api.php)
+          LOGIN_TOKEN=$(echo "$LOGIN_RESPONSE" | jq -r '.login.token')
 
-      - name: Login
-        run: |
-          curl -d "action=login&lgname=Alexisyoj23@Mikafleur123&lgpassword=ep47hjsfj3gmejghmqv7poc1rh76fb39&lgtoken=$LOGIN_TOKEN&format=json" https://panalawahigdocs.miraheze.org/w/api.php
+          # Step 2: Complete login
+          curl -sS \
+            -d "action=login" \
+            -d "lgname=Alexisyoj23@Mikafleur123" \
+            -d "lgpassword=$BOT_PASSWORD" \
+            -d "lgtoken=$LOGIN_TOKEN" \
+            -d "format=json" \
+            https://panalawahigdocs.miraheze.org/w/api.php
 
       - name: Get Edit Token
         run: |
-          EDIT_TOKEN=$(curl -s "https://panalawahigdocs.miraheze.org/w/api.php?action=query&meta=tokens&format=json" | jq -r '.query.tokens.csrftoken')
+          EDIT_TOKEN=$(curl -sS \
+            "https://panalawahigdocs.miraheze.org/w/api.php?action=query&meta=tokens&format=json" \
+            | jq -r '.query.tokens.csrftoken')
           echo "EDIT_TOKEN=$EDIT_TOKEN" >> $GITHUB_ENV
 
       - name: Update Wiki Page
         run: |
-          CONTENT=$(base64 -w0 README.md)
+          # Encode content and update page
           curl -X POST \
             -H "Content-Type: application/x-www-form-urlencoded" \
             --data-urlencode "title=Main Page" \
