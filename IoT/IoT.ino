@@ -356,3 +356,4 @@ void updateLCD(float tempC, float turbidity, float tds, float pH) {
   lcd.print("TDS:"); lcd.print(tds, 0);
   lcd.print(" pH:"); lcd.print(pH, 1);
 }
+

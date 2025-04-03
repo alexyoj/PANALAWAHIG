@@ -1,14 +1,14 @@
-# PANALAWAHIG
+PANALAWAHIG
 IoT-Based Water Quality Testing System for far-flung Areas of Davao City
 
-## Project Overview
-**Panalawahig** is an IoT-based water quality testing system designed specifically for remote and far-flung areas of Davao City. We developed this project to address the critical challenge faced by communities located far from water testing laboratories. These communities often lack access to timely water quality testing, which can pose serious health risks. Our portable system enables on-site water quality assessment and remote data transmission, eliminating the need for physical samples to be transported to distant laboratories.
+Project Overview
+Panalawahig: is an IoT-based water quality testing system designed specifically for remote and far-flung areas of Davao City. We developed this project to address the critical challenge faced by communities located far from water testing laboratories. These communities often lack access to timely water quality testing, which can pose serious health risks. Our portable system enables on-site water quality assessment and remote data transmission, eliminating the need for physical samples to be transported to distant laboratories.
 
 In addition to real-time testing, Panalawahig features a user-friendly web interface that allows users to view historical data, helping communities and authorities track water quality trends over time. This web platform is connected via the ThingSpeak API, enabling seamless data transfer from the device to the online system for remote access and monitoring.
 
 Moreover, after every water quality test, the device automatically sends an SMS notification to local authorities in remote areas, providing them with the latest water quality data. This ensures timely updates and quick responses in case of any detected water contamination.
 
-## Hardware Components
+Hardware Components
 
 The system utilizes the following components:
 - DS18B20 Temperature Sensor — Measures water temperature accurately.
