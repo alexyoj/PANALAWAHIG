@@ -1,70 +1,193 @@
-<!-- START MIRAHEZE CONTENT -->
-
 # PANALAWAHIG
-*IoT-Based Water Quality Testing System for Far-Flung Areas of Davao City**
 
-# Project Overview
-**Panalawahig:** is an innovative IoT-based water quality testing system designed to address the challenges faced by remote and far-flung areas of Davao City in monitoring water safety. Many communities in these regions lack access to reliable water testing facilities, which poses significant health risks due to the potential for contaminated water sources. This project was developed to bridge that gap by providing a portable and easy-to-use system for on-site water quality testing.
+<div align="center">
+  <h2>IoT-Based Water Quality Testing System for Far-Flung Areas of Davao City</h2>
+  <img src="https://img.shields.io/badge/Status-In%20Development-yellow" alt="Status: In Development">
+  <img src="https://img.shields.io/badge/License-MIT-blue" alt="License: MIT">
+  <img src="https://img.shields.io/badge/Version-1.0-green" alt="Version: 1.0">
+</div>
 
-Our system offers real-time water quality analysis and transmits the results to a cloud-based platform for remote monitoring. This eliminates the need for physically transporting water samples to distant laboratories, ensuring faster and more accessible results. By utilizing a user-friendly web interface, **Panalawahig** allows authorities and local communities to access historical data and track trends in water quality over time, facilitating informed decision-making.
+## 📋 Table of Contents
+- [Project Overview](#project-overview)
+- [Key Features](#key-features)
+- [System Architecture](#system-architecture)
+- [Hardware Components](#hardware-components)
+- [Software Requirements](#software-requirements)
+- [Installation Guide](#installation-guide)
+- [Usage Instructions](#usage-instructions)
+- [Data Visualization](#data-visualization)
+- [System Benefits](#system-benefits)
+- [Future Developments](#future-developments)
+- [Contributing](#contributing)
+- [License](#license)
+- [Project Team](#project-team)
 
-Additionally, **Panalawahig** integrates an automated notification system that sends SMS alerts to local authorities with the latest water quality data after each test. This ensures that relevant parties receive timely updates, allowing them to respond quickly to any potential water contamination issues.
+## 🌊 Project Overview
 
-# Key Features
-* Real-time water quality testing with multiple parameters such as temperature, pH, turbidity, dissolved oxygen, and more.
-* Web interface for real-time data visualization and historical trend tracking, accessible remotely via the ThingSpeak API.
-* SMS notifications for local authorities to receive instant alerts after every water quality test.
-* Portable design suitable for deployment in remote and hard-to-reach areas.
-* Data-driven decision-making to support local communities and government agencies in maintaining clean water resources.
+**Panalawahig** is an innovative IoT-based water quality testing system designed to address the challenges faced by remote and far-flung areas of Davao City in monitoring water safety. Many communities in these regions lack access to reliable water testing facilities, which poses significant health risks due to the potential for contaminated water sources. 
 
-# Hardware Components
+This project bridges that gap by providing a portable and easy-to-use system for on-site water quality testing. Our system offers real-time water quality analysis and transmits the results to a cloud-based platform for remote monitoring. This eliminates the need for physically transporting water samples to distant laboratories, ensuring faster and more accessible results.
 
-The system utilizes the following components for comprehensive water quality testing:
+By utilizing a user-friendly web interface, **Panalawahig** allows authorities and local communities to access historical data and track trends in water quality over time, facilitating informed decision-making. Additionally, the system integrates an automated notification system that sends SMS alerts to local authorities with the latest water quality data after each test, ensuring timely updates and quick responses to potential water contamination issues.
 
-* DS18B20 Temperature Sensor: Measures water temperature with high accuracy, critical for assessing water conditions.
-* TDS Sensor (Total Dissolved Solids): Measures the concentration of dissolved solids (salts, minerals, etc.) in water, displayed in ppm (parts per million).
-* pH Sensor: Determines the water's acidity or alkalinity on a scale from 0 to 14, essential for evaluating water quality.
-* Turbidity Sensor: Measures water clarity by detecting suspended particles, an indicator of water pollution.
-* Dissolved Oxygen (DO) Sensor: Assesses the amount of oxygen dissolved in the water, which is crucial for aquatic life sustainability.
-* Conductivity Sensor: Measures the water's ability to conduct electricity, which is often correlated with salinity and overall water quality.
-* ORP Sensor (Oxidation-Reduction Potential): Measures the water’s ability to neutralize contaminants, providing insight into water’s purification potential.
-* Flow Sensor: Monitors the flow rate of water, useful for dynamic testing environments, especially in rivers or streams.
-* Water Level Sensor: Detects fluctuations in water levels, useful for flood monitoring or drought detection.
-* Temperature and Humidity Sensor (DHT11/DHT22): Monitors environmental factors that may affect water quality, such as ambient temperature and humidity.
+## ✨ Key Features
 
-# Other Components:
-* Arduino Uno R3: The microcontroller that processes sensor data and coordinates communication with other components.
-* I2C LCD Screen: Provides real-time visual feedback of sensor readings, offering an easy interface for on-site monitoring.
-* SIM900 GSM Module: Enables remote data transmission via SMS, ensuring timely communication with local authorities.
-* Portable Power Supply: A power bank with adequate capacity to ensure uninterrupted operation in off-grid locations.
+- **Real-time Monitoring**: Instant water quality testing with multiple parameters
+- **Web Interface**: Remote data visualization and historical trend tracking via ThingSpeak API
+- **SMS Notifications**: Automated alerts to authorities after each water quality test
+- **Portable Design**: Suitable for deployment in remote and hard-to-reach areas
+- **Data-driven Decision Making**: Supports communities in maintaining clean water resources
+- **Low Power Consumption**: Designed for extended use in off-grid locations
+- **Easy Deployment**: Simple setup process requiring minimal technical knowledge
 
-# System Overview
+## 🏗️ System Architecture
 
-The Panalawahig system operates by continuously collecting data from various sensors to evaluate water quality. The sensor data is processed by the Arduino Uno, which then sends the results to a cloud platform via the ThingSpeak API. Local authorities and community members can access this data through a web interface, providing real-time insights into the state of water resources in their area.
+```
+┌─────────────────────────────────────────┐
+│             PANALAWAHIG SYSTEM          │
+└───────────────────┬─────────────────────┘
+                    │
+        ┌───────────▼───────────┐
+        │  Data Acquisition     │
+        │    Components         │
+        └───────────┬───────────┘
+                    │
+┌───────────────────▼───────────────────┐
+│            Sensor Array               │
+├─────────────┬─────────────┬───────────┤
+│ Temperature │    pH       │ Turbidity │
+├─────────────┼─────────────┼───────────┤
+│     TDS     │Dissolved O₂ │Conductivity│
+├─────────────┼─────────────┼───────────┤
+│     ORP     │  Flow Rate  │Water Level │
+└─────────────┴──────┬──────┴───────────┘
+                     │
+         ┌───────────▼──────────┐
+         │   Data Processing    │
+         │    (Arduino Uno)     │
+         └───────────┬──────────┘
+                     │
+           ┌─────────▼─────────┐
+           │  Local Display    │
+           │   (I2C LCD)       │
+           └─────────┬─────────┘
+                     │
+       ┌─────────────┴─────────────┐
+       │                           │
+┌──────▼───────┐           ┌──────▼───────┐
+│  SMS Alerts  │           │ Cloud Storage │
+│ (SIM900 GSM) │           │ (ThingSpeak) │
+└──────────────┘           └──────┬───────┘
+                                  │
+                          ┌───────▼───────┐
+                          │  Web Interface │
+                          │  (Dashboard)   │
+                          └───────────────┘
+```
 
-Panalawahig is powered by a portable power source, making it ideal for deployment in remote locations that lack consistent electricity access. The integration of the SIM900 GSM module allows for easy and efficient communication, sending SMS alerts directly to local authorities and other relevant stakeholders whenever the water quality readings exceed predefined thresholds.
+## 💻 Hardware Components
 
-#System Benefits:
-* Real-time monitoring: Provides immediate data on water quality, allowing for quick responses to contamination.
-* Cost-effective: Reduces the need for expensive laboratory testing, enabling more frequent assessments at a fraction of the cost.
-* Portable and durable: Designed for use in remote and harsh environments, ensuring reliability and ease of use in areas with limited resources.
-* Empowering communities: By providing direct access to water quality data, the system helps local authorities and residents make informed decisions about water usage and safety.
+| Component | Description | Function |
+|-----------|-------------|----------|
+| **DS18B20 Temperature Sensor** | High-precision digital temperature sensor | Measures water temperature with ±0.5°C accuracy |
+| **TDS Sensor** | Analog sensor for dissolved solids | Measures concentration in ppm (parts per million) |
+| **pH Sensor** | Glass electrode sensor | Determines acidity/alkalinity on 0-14 scale |
+| **Turbidity Sensor** | Optical sensor | Measures water clarity by detecting suspended particles |
+| **Dissolved Oxygen Sensor** | Galvanic or optical sensor | Assesses oxygen content crucial for aquatic life |
+| **Conductivity Sensor** | Two-electrode sensor | Measures water's electrical conductivity |
+| **ORP Sensor** | Platinum electrode sensor | Measures water's oxidation-reduction potential |
+| **Flow Sensor** | Hall effect sensor | Monitors water flow rate in dynamic environments |
+| **Water Level Sensor** | Capacitive or ultrasonic sensor | Detects fluctuations in water levels |
+| **DHT11/DHT22** | Digital sensor | Monitors ambient temperature and humidity |
+| **Arduino Uno R3** | Microcontroller | Processes sensor data and coordinates communication |
+| **I2C LCD Screen** | 16x2 or 20x4 display | Provides real-time visual feedback of readings |
+| **SIM900 GSM Module** | Cellular communication module | Enables remote data transmission via SMS |
+| **Portable Power Supply** | Rechargeable power bank | Ensures uninterrupted operation in off-grid locations |
 
-# Future Developments
+## 📊 Software Requirements
 
-While the current system is designed to monitor the most critical water quality parameters, future iterations of Panalawahig will aim to incorporate additional sensors and features, such as:
-* Integration with weather forecasting systems to correlate environmental data with water quality trends.
-* Advanced data analytics and machine learning models to predict potential contamination events before they occur.
-* Expanded SMS and email notification features for broader coverage, including nearby health departments and environmental agencies.
+- Arduino IDE (1.8.x or later)
+- Required Libraries:
+  - OneWire
+  - DallasTemperature
+  - LiquidCrystal_I2C
+  - ThingSpeak
+  - SoftwareSerial
+  - DHT
+  - Additional sensor-specific libraries
 
-# Conclusion
+## 🛠️ Installation Guide
 
-Panalawahig is more than just a water testing system; it is a vital tool that empowers communities in remote areas of Davao City to monitor and safeguard their water resources. With its combination of real-time testing, remote data access, and automated notifications, it provides a comprehensive solution to the pressing issue of water contamination in isolated regions.
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/username/panalawahig.git
+   cd panalawahig
+   ```
 
-By equipping local authorities with accurate, up-to-date information, '''Panalawahig''' contributes to better water management, healthier communities, and a safer environment for all.
+2. Connect hardware components according to the wiring diagram in `/docs/wiring_diagram.pdf`
+
+3. Install required Arduino libraries through the Arduino IDE Library Manager
+
+4. Upload the main sketch:
+   ```bash
+   arduino-cli compile --upload panalawahig.ino --port /dev/ttyUSB0
+   ```
+
+5. Configure your ThingSpeak API key in the `config.h` file
+
+## 📝 Usage Instructions
+
+1. Power on the device using the portable power supply
+2. Immerse the water sensors in the water source to be tested
+3. Wait approximately 60 seconds for sensor calibration
+4. Read real-time values on the LCD display
+5. Data is automatically transmitted to ThingSpeak and SMS alerts are sent
+6. Access the web dashboard for detailed analysis at `https://thingspeak.com/channels/your-channel-id`
+
+## 📊 Data Visualization
+
+Data visualization is available through:
+- On-device LCD screen (real-time values)
+- ThingSpeak web dashboard (historical data with graphs)
+- Exported CSV files for offline analysis
+- SMS notifications with current readings
+
+## 🌟 System Benefits
+
+- **Real-time monitoring**: Provides immediate data on water quality, allowing for quick responses to contamination
+- **Cost-effective**: Reduces the need for expensive laboratory testing, enabling more frequent assessments
+- **Portable and durable**: Designed for use in remote and harsh environments with limited resources
+- **Empowering communities**: Provides direct access to water quality data for informed decision-making
+- **Low maintenance**: Designed for minimal upkeep in areas with limited technical support
+- **Scalable**: System can be easily replicated for multiple deployment locations
+
+## 🚀 Future Developments
+
+- Integration with weather forecasting systems to correlate environmental data with water quality trends
+- Advanced data analytics and machine learning models to predict potential contamination events
+- Expanded notification features including email and mobile app integration
+- Solar power integration for extended field deployment
+- Additional sensor integration for comprehensive water quality assessment
+- Mobile application development for easier access to data and system management
+
+## 👥 Contributing
+
+We welcome contributions to the Panalawahig project! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Project Team
+
+Developed by the KAJA Group:
+- [Amores, Jancil Joy | Technical Writer](https://www.facebook.com/janciljoy.amores)
+- [Bacaltos, Alexis Joseph Yoj P. | Programmer](https://www.facebook.com/captainalexisyoj)
+- [Sebandal, Kate Andrea | UI/UX Designer](https://www.facebook.com/kateandrea17)
+- [Tejero, Asianna Grace | System Analyst](https://www.facebook.com/grc.versil07)
 
 ---
 
-KAJA Group
-
-<!-- END MIRAHEZE CONTENT -->
+<p align="center">
+  Made with ❤️ in Davao City, Philippines
+</p>
